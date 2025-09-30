@@ -1,4 +1,4 @@
-# Python Healthcheck 
+# Python Healthcheck - AI Generated Readme
 
 A lightweight Python application exposing Prometheus metrics for monitoring external URLs and Python process statistics.
 
@@ -65,16 +65,7 @@ Customizing Deployment:
 Override default values using a file:  
 `helm install vaerolab-app . -f my-values.yaml`  
 
-Notes:
-
-- Helm chart includes optional expansion:
-  - Environment variables via ConfigMap
-  - Secrets via Kubernetes Secret or CSI driver
-  - Resource limits and requests
-  - Node selectors, affinity, tolerations
-  - Autoscaling configuration
-  - Ingress rules
-- You can safely start with defaults and expand as needed.
+I recommend k8s deployment is done via pipelines.
 
 ### Prometheus Integration in k8s
 
