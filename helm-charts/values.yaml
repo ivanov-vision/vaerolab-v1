@@ -57,7 +57,7 @@ cloud:
   type: ""
 
 volumes:
-  enables: false
+  enabled: false
   type: ""
 
 ingress:
