@@ -1,4 +1,4 @@
-# Python Healthcheck - AI Generated Readme
+# Python Healthcheck
 
 A lightweight Python application exposing Prometheus metrics for monitoring external URLs and Python process statistics.
 
@@ -17,11 +17,12 @@ A lightweight Python application exposing Prometheus metrics for monitoring exte
 - Python 3.13+
 - `pip`
 - Docker (optional)
+- Helm (optional)
 
 ### Local Setup
 
 # Clone the repository
-git clone https://github.com/your-username/vaerolab-v1.git
+git clone https://github.com/ivanov-vision/vaerolab-v1
 cd vaerolab-v1/app
 
 # Create virtual environment
@@ -40,10 +41,9 @@ python app.py
 curl http://localhost:8000/metrics
 
 ### Docker Setup
-
+From root dir
 docker build -f docker/Dockerfile -t vaerolab-app .
 docker run -p 8000:8000 vaerolab-app
-
 
 ### Kubernetes / Helm Deployment
 
@@ -55,11 +55,7 @@ Install the Helm chart:
 
 Check pods and service:  
 `kubectl get pods`  
-`kubectl get svc`  
-
-Port-forward to access metrics:  
-`kubectl port-forward svc/vaerolab-app 8000:8000`  
-`curl http://localhost:8000/metrics`
+`kubectl get svc`
 
 Customizing Deployment:  
 Override default values using a file:  
