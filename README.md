@@ -72,11 +72,11 @@ I recommend k8s deployment is done via pipelines.
 
 Add this job to your Prometheus configuration:
 
-```yaml
+yaml```
 scrape_configs:
   - job_name: 'python-healthcheck'
     static_configs:
-      - targets: ['python-healthcheck.default.svc.cluster.local:8400']  # adjust host/port/url as needed
+      - targets: ['python-healthcheck.default.svc.cluster.local:8400']  # adjust host/port/url as needed```
 
 # Metrics Exposed
 
