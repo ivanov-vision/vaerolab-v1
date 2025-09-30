@@ -23,9 +23,10 @@ A lightweight Python application exposing Prometheus metrics for monitoring exte
 
 # Clone the repository
 git clone https://github.com/ivanov-vision/vaerolab-v1
-cd vaerolab-v1/app
 
 # Create virtual environment
+cd vaerolab-v1/app
+
 python -m venv venv
 .\venv\Scripts\Activate.ps1   # On Windows PowerShell
 
