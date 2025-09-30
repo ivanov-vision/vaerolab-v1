@@ -46,9 +46,9 @@ curl http://localhost:8000/metrics
 # Docker Setup
 From root dir
 
-docker build -f docker/Dockerfile -t python-healthchec .
+docker build -f docker/Dockerfile -t python-healthcheck .
 
-docker run -p 8000:8000 python-healthchec
+docker run -p 8000:8000 python-healthcheck
 
 # Kubernetes / Helm Deployment
 
@@ -56,7 +56,7 @@ Navigate to Helm chart folder:
 `cd helm-charts`
 
 Install the Helm chart:  
-`helm install python-healthchec
+`helm install python-healthcheck .`  
 
 Check pods and service:  
 `kubectl get pods`  
@@ -64,7 +64,7 @@ Check pods and service:
 
 Customizing Deployment:  
 Override default values using a file:  
-`helm install python-healthchec . -f my-values.yaml`
+`helm install python-healthcheck . -f my-values.yaml`  
 
 I recommend k8s deployment is done via pipelines.
 
