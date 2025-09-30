@@ -42,14 +42,14 @@ python app.py
 # Open your browser or use curl to see metrics
 curl http://localhost:8000/metrics
 
-### Docker Setup
+# Docker Setup
 From root dir
 
 docker build -f docker/Dockerfile -t vaerolab-app .
 
 docker run -p 8000:8000 vaerolab-app
 
-### Kubernetes / Helm Deployment
+# Kubernetes / Helm Deployment
 
 Navigate to Helm chart folder:  
 `cd helm-charts`
@@ -67,7 +67,7 @@ Override default values using a file:
 
 I recommend k8s deployment is done via pipelines.
 
-### Prometheus Integration in k8s
+# Prometheus Integration in k8s
 
 Add this job to your Prometheus configuration:
 
@@ -76,7 +76,7 @@ scrape_configs:
     static_configs:
       - targets: ['python-healthcheck.default.svc.cluster.local:8400']  # adjust host/port/url as needed
 
-### Metrics Exposed
+# Metrics Exposed
 
 - `sample_external_url_up{url="..."}`: 1 if URL is reachable, 0 otherwise
 - `sample_external_url_response_ms{url="..."}`: Response time in ms
