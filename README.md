@@ -41,8 +41,7 @@ curl http://localhost:8000/metrics
 
 ### Docker Setup
 
-cd docker
-docker build -t vaerolab-app .
+docker build -f docker/Dockerfile -t vaerolab-app .
 docker run -p 8000:8000 vaerolab-app
 
 ### Prometheus Integration
