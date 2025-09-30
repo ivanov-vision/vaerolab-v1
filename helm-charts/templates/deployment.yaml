@@ -1,0 +1,113 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "app.fullname" . }}
+  labels:
+    {{- include "app.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "app.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- if and (.Values.cloud.enabled) (eq .Values.cloud.type "azure") }}
+        aadpodidbinding: {{ include "app.fullname" . }}
+        {{- end }}
+        {{- include "app.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "app.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          {{- if or (.Values.secrets.enabled) (.Values.environment.enabled) }}
+          envFrom:
+          {{- if .Values.secrets.enabled }}
+            - secretRef:
+                name: {{ include "app.fullname" . }}
+          {{- end }}
+          {{- if .Values.environment.enabled }}
+            - configMapRef:
+                name: {{ include "app.fullname" . }}
+          {{- end }}
+          {{- end }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.containerPort }}
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /status
+              port: {{ .Values.service.port }}
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /status
+              port: {{ .Values.service.port }}
+            initialDelaySeconds: 60
+            periodSeconds: 5
+            failureThreshold: 2
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          {{- if or (eq .Values.secrets.enabled true) (eq .Values.volumes.enabled true) }}
+          volumeMounts:
+          {{- end }}
+          {{- if .Values.secrets.enabled }}
+            - mountPath: /mnt/secrets/
+              name: secret-store
+              readOnly: true
+          {{- end }}
+          {{- if .Values.volumes.enabled }}
+          {{- range .Values.volumes.values }}
+            - mountPath: {{ .mountPath }}
+              name: {{ .name }}
+          {{- end }}
+          {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- if or (eq .Values.secrets.enabled true) (eq .Values.volumes.enabled true) }}
+      volumes:
+      {{- end }}
+      {{- if .Values.secrets.enabled }}
+        - name: secret-store
+          csi:
+            driver: secrets-store.csi.k8s.io
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: {{ include "app.fullname" . }}
+      {{- end }}
+      {{- if .Values.volumes.enabled }}
+      {{- range .Values.volumes.values }}
+        - name: {{ .name }}
+          persistentVolumeClaim:
+            claimName: {{ .name }}
+      {{- end }}
+      {{- end }}

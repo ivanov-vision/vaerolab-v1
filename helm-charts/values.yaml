@@ -1,0 +1,77 @@
+# Default values for app.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: healthcheck
+  tag: latest
+  pullPolicy: Always
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: true
+  name: ""
+  annotations: []
+
+podAnnotations: []
+
+podSecurityContext:
+  fsGroup: 2000
+
+securityContext: 
+  runAsNonRoot: true
+  runAsUser: 2001
+  readOnlyRootFilesystem: false
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+      - ALL
+
+service:
+  type: ClusterIP
+  port: 8400
+  containerPort: 8400
+
+environment:
+  enabled: true
+  values:
+    var1: "1"
+    var2: "2"
+    var3: "3"
+
+secrets:
+  enabled: true
+  name: healtcheck-secrets
+  values:
+    AUTH0_DOMAIN: ""
+    AUTH0_API_AUDIENCE: ""
+    AUTH0_ISSUER: ""
+
+ingress:
+  enabled: false
+
+resources: 
+  limits:
+    cpu: 800m
+    memory: 600Mi
+  requests:
+    cpu: 400m
+    memory: 600Mi
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: {}
+
+affinity: {}
