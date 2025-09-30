@@ -44,14 +44,46 @@ curl http://localhost:8000/metrics
 docker build -f docker/Dockerfile -t vaerolab-app .
 docker run -p 8000:8000 vaerolab-app
 
-### Prometheus Integration
+
+### Kubernetes / Helm Deployment
+
+Navigate to Helm chart folder:  
+`cd helm-charts`
+
+Install the Helm chart:  
+`helm install vaerolab-app .`  
+
+Check pods and service:  
+`kubectl get pods`  
+`kubectl get svc`  
+
+Port-forward to access metrics:  
+`kubectl port-forward svc/vaerolab-app 8000:8000`  
+`curl http://localhost:8000/metrics`
+
+Customizing Deployment:  
+Override default values using a file:  
+`helm install vaerolab-app . -f my-values.yaml`  
+
+Notes:
+
+- Helm chart includes optional expansion:
+  - Environment variables via ConfigMap
+  - Secrets via Kubernetes Secret or CSI driver
+  - Resource limits and requests
+  - Node selectors, affinity, tolerations
+  - Autoscaling configuration
+  - Ingress rules
+- You can safely start with defaults and expand as needed.
+
+### Prometheus Integration in k8s
 
 Add this job to your Prometheus configuration:
 
 scrape_configs:
-  - job_name: 'vaerolab-app'
+  - job_name: 'python-healthcheck'
     static_configs:
-      - targets: ['host.docker.internal:8000']  # adjust host/port as needed
+      - targets: ['python-healthcheck.default.svc.cluster.local:8400']  # adjust host/port/url as needed
 
 ### Metrics Exposed
 
@@ -62,6 +94,3 @@ scrape_configs:
 - `python_gc_collections_total{generation="0|1|2"}`: GC collection counts
 - `python_info`: Python version info
 - `process_virtual_memory_bytes`, `process_resident_memory_bytes`, `process_cpu_seconds_total`, etc.
-
-
-

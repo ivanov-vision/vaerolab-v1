@@ -52,6 +52,14 @@ secrets:
     AUTH0_API_AUDIENCE: ""
     AUTH0_ISSUER: ""
 
+cloud:
+  enabled: false
+  type: ""
+
+volumes:
+  enables: false
+  type: ""
+
 ingress:
   enabled: false
 

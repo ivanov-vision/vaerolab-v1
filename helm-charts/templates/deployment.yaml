@@ -57,7 +57,7 @@ spec:
               port: {{ .Values.service.port }}
             initialDelaySeconds: 60
             periodSeconds: 10
-            failureThreshold: 3
+            failureThreshold: 3            
           readinessProbe:
             httpGet:
               path: /status
