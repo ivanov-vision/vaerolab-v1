@@ -44,7 +44,9 @@ curl http://localhost:8000/metrics
 
 ### Docker Setup
 From root dir
+
 docker build -f docker/Dockerfile -t vaerolab-app .
+
 docker run -p 8000:8000 vaerolab-app
 
 ### Kubernetes / Helm Deployment
