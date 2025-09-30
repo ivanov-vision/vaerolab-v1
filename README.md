@@ -46,9 +46,9 @@ curl http://localhost:8000/metrics
 # Docker Setup
 From root dir
 
-docker build -f docker/Dockerfile -t vaerolab-app .
+docker build -f docker/Dockerfile -t python-healthchec .
 
-docker run -p 8000:8000 vaerolab-app
+docker run -p 8000:8000 python-healthchec
 
 # Kubernetes / Helm Deployment
 
@@ -56,7 +56,7 @@ Navigate to Helm chart folder:
 `cd helm-charts`
 
 Install the Helm chart:  
-`helm install vaerolab-app .`  
+`helm install python-healthchec
 
 Check pods and service:  
 `kubectl get pods`  
@@ -64,7 +64,7 @@ Check pods and service:
 
 Customizing Deployment:  
 Override default values using a file:  
-`helm install vaerolab-app . -f my-values.yaml`  
+`helm install python-healthchec . -f my-values.yaml`
 
 I recommend k8s deployment is done via pipelines.
 
@@ -78,7 +78,6 @@ scrape_configs:
     static_configs:
       - targets: ['python-healthcheck.default.svc.cluster.local:8400']  # adjust host/port/url as needed 
 ```
-
 
 # Metrics Exposed
 
