@@ -28,7 +28,7 @@ cd vaerolab-v1/app
 # Create virtual environment
 python -m venv venv
 .\venv\Scripts\Activate.ps1   # On Windows PowerShell
-# OR
+OR
 source venv/bin/activate       # On Linux / macOS
 
 # Install dependencies
